@@ -574,3 +574,14 @@ const products = [
     ],
   },
 ];
+
+const categories = [...new Set(products.map(({ category }) => category))]; // by using declarative thinking
+console.log(categories)
+
+// const categories = [];  **by using imperative thinking**
+
+// for(product of products){
+//   if(!categories.includes(product.category)){
+//   categories.push(product.category)
+//   }
+// }
