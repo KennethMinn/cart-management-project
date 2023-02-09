@@ -3,6 +3,10 @@ const app = document.querySelector("#app");
 const productCategoriesBtn = document.querySelector("#productCategories");
 const search = document.querySelector("#search");
 const cart = document.querySelector("#cart");
+const addModal = document.querySelector("#addModal");
+const offcanvasBtn = document.querySelector("#offcanvasBtn");
+const offcanvasBody = document.querySelector("#offcanvasBody");
+const total = document.querySelector("#total");
 const productDetailModal = new bootstrap.Modal("#productDetailModal");
 
 // functions
@@ -46,7 +50,9 @@ const createCard = (products) => {
         products.description
       )}</p>
       <div class=" d-flex justify-content-between align-items-center">
-          <div class=" h5 text-info">$ ${products.price}</div>
+          <div class=" h5 text-info">$ <span class="price">${
+            products.price
+          }</span></div>
           <button class=" btn btn-outline-info add">Add to Cart</button>
       </div>
   </div>
@@ -104,7 +110,9 @@ const renderProductModal = () => {
     </div>
   </div>
   <p class=" mt-2 small description">${currentProduct.description}</p>
-  <div class=" h5 text-info">$ ${currentProduct.price}</div>
+  <div class=" h5 text-info">$ <span class="price">${
+    currentProduct.price
+  }</span></div>
     `;
   productDetailModal.show();
   // console.log(productDetailModal)
@@ -196,6 +204,42 @@ const fly_img = () => {
   }, 100);
 };
 
+const createOffcanvasBox = () => {
+  const currentImage = event.target
+    .closest(".product-card")
+    .querySelector(".img");
+  const currentDescription = event.target
+    .closest(".product-card")
+    .querySelector(".description");
+  const currentPrice = event.target
+    .closest(".product-card")
+    .querySelector(".price");
+  const currentId = event.target
+    .closest(".product-card")
+    .getAttribute("card-id");
+  const unitPrice = event.target
+    .closest(".product-card")
+    .querySelector(".price").innerText;
+
+  const box = document.createElement("div");
+  box.setAttribute("box-id", currentId);
+  box.setAttribute("unit-price", unitPrice);
+  box.className = "border shadow p-3";
+  box.innerHTML = ` 
+            <img src="${currentImage.src}" class="w-100" alt="">
+            <h5 class=" fw-bold mt-2">${currentDescription.innerText}</h5>
+            <div class=" d-flex justify-content-between">
+              <div class="d-flex align-items-center">
+                <a class=" text-decoration-none text-dark border px-2 text-center info-transparent minusBtn">-</a>
+                <span class=" border px-2 info-transparent qty">1</span>
+                <a class="text-decoration-none text-dark border px-2 text-center info-transparent plusBtn">+</a>
+              </div>
+              <h5 class=" text-info fw-bold">$ <span class="price">${currentPrice.innerText}</span></h5>
+            </div>`;
+
+  return box;
+};
+
 //processes
 
 renderProductCard(products);
@@ -223,6 +267,14 @@ search.addEventListener("keyup", (event) => {
   renderBySearch(event.target.value);
 });
 
+// addModal.addEventListener("click", () => {
+//   console.log("lksdf");
+// });
+
+cart.addEventListener("click", () => {
+  offcanvasBtn.click();
+});
+
 app.addEventListener("click", (event) => {
   if (
     event.target.closest(".product-card") &&
@@ -242,5 +294,40 @@ app.addEventListener("click", (event) => {
     add.classList.add("active");
     add.innerText = "Add more";
     fly_img();
+
+    if (event.target.classList.contains("plusBtn")) {
+      console.log("add");
+    }
+
+    const existedCard = [...offcanvasBody.children].find(
+      (el) =>
+        el.getAttribute("box-id") ==
+        event.target.closest(".product-card").getAttribute("card-id")
+    );
+    // console.log(existedCard);
+    if (existedCard) {
+      // console.log(existedCard);
+      const plusBtn = existedCard.querySelector(".plusBtn");
+      const qty = existedCard.querySelector(".qty");
+      const minusBtn = existedCard.querySelector(".minusBtn");
+      const price = existedCard.querySelector(".price");
+      const unitPrice = existedCard.getAttribute("unit-price");
+
+      // console.log(plusBtn);
+      plusBtn.addEventListener("click", () => {
+        qty.innerText = parseFloat(qty.innerText) + 1;
+        price.innerText = parseFloat(qty.innerText) * parseFloat(unitPrice);
+      });
+      minusBtn.addEventListener("click", () => {
+        qty.innerText = parseFloat(qty.innerText) - 1;
+        price.innerText = parseFloat(qty.innerText) * parseFloat(unitPrice);
+      });
+      // console.log(existedCard)
+      // console.log(qty,qty.innerText,typeof qty.innerText,typeof parseFloat(qty.innerText));
+      console.log(qty.innerHTML, typeof qty.innerHTML);
+      qty.innerText = parseInt(qty.innerText, 10) + 1;
+    } else {
+      offcanvasBody.append(createOffcanvasBox());
+    }
   }
 });

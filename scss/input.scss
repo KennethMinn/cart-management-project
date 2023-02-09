@@ -1,8 +1,6 @@
 $info: #2eb6e3;
-$warning : #ffd60a;
+$warning: #ffd60a;
 $carousel-indicator-active-bg: #ffd60a;
-
-
 
 .info-gradient {
   background: #7f7fd5; /* fallback for old browsers */
@@ -19,20 +17,50 @@ $carousel-indicator-active-bg: #ffd60a;
     #7f7fd5
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
+.info-transparent{
+  background-color: #2eb6e355;
+}
 
-.img{
+.img {
   height: 160px;
   object-fit: contain;
 }
-.description{
-  height: 30px
+.description {
+  height: 30px;
 }
-.carouselImage{
+.carouselImage {
   height: 300px;
   object-fit: contain;
-
 }
+#cart {
+  position: relative;
+}
+.noti {
+  box-sizing: border-box;
+  position: absolute;
+  background: #ff4d6d;
+  border-radius: 50%;
+  width: 23px;
+  height: 23px;
+  text-align: center;
+  line-height: 23px;
+  top: 7px;
+  right: 21px;
+  color: white;
+  font-size: 11px
+}
+.font-family{
+  font-family: 'PT Serif', serif;
+}
+// .pr{
+//   position: relative;
+// }
+// .pa{
+//   position: absolute;
+//   top: -24px;
+// }
 
+@import url('https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&display=swap');
 @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 @import "../node_modules/bootstrap-icons/font/bootstrap-icons.css";
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
